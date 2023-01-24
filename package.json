@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "moment": "^2.29.4",
-    "semantic-ui-css": "^2.5.0",
-    "semantic-ui-react": "^2.1.4"
-  }
-}
