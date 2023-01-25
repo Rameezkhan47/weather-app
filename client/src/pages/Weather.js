@@ -31,41 +31,44 @@ const Weather = () => {
 
   setInterval(() => {
     const getWeather = async () => {
-      await axios
-        .get("http://localhost:5000/weather/" + user.username)
-        .then((res) => {
-          setData(res.data.info);
-        });
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/weather/" + user.username
+        );
+        if (response) {
+          setData(response.data.info);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     };
     getWeather();
   }, 30 * 1000);
 
   async function addCity(e) {
-    e.preventDefault();
-    let item = city;
-    console.log(city);
-    await axios
-      .post("http://localhost:5000/weather", { item, username: user.username })
-      .then((res) => {
-        console.log("response is", res);
-        if (res.data.info) {
-          setData((prev) => [...prev, res.data.info]);
-        } else {
-          alert(res.data.msg);
-        }
-      })
-      .then(setCity(""))
-      .catch((err) => console.log(err));
+    try {
+      e.preventDefault();
+      let item = city;
+      console.log(city);
+      const response = await axios.post("http://localhost:5000/weather", {
+        item,
+        username: user.username,
+      });
+        setData((prev) => [...prev, response.data.info]);
+        setCity("");
+    } catch (error) {
+      console.log("error is",error);
+    }
   }
   async function onAddClick(name) {
-    console.log("value is", name);
-    await axios
-      .delete("http://localhost:5000/weather", {
+    try {
+      const response = await axios.delete("http://localhost:5000/weather", {
         data: { name: name, username: user.username },
-      })
-      .then((res) => {
-        setData(res.data.info);
       });
+      setData(response.data.info);
+    } catch (error) {
+      console.log(error);
+    }
   }
   function logout() {
     localStorage.removeItem("user_key");
