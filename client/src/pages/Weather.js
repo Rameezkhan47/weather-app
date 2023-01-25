@@ -9,21 +9,22 @@ const Weather = () => {
   const navigate = useNavigate();
   const [city, setCity] = useState("");
   const [data, setData] = useState([]);
-  
-
 
   useEffect(() => {
     if (localStorage.length === 0) {
       navigate("/");
     }
     const getWeather = async () => {
-      await axios
-        .get("http://localhost:5000/weather/" + user.username)
-        .then((res) => {
-          console.log(res.data.info);
-          setData(res.data.info);
-        });
-      // .then((res)=>
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/weather/" + user.username
+        );
+        if (response) {
+          setData(response.data.info);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     };
     getWeather();
   }, []);
