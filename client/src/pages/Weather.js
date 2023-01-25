@@ -35,9 +35,7 @@ const Weather = () => {
         const response = await axios.get(
           "http://localhost:5000/weather/" + user.username
         );
-        if (response) {
           setData(response.data.info);
-        }
       } catch (error) {
         console.log(error);
       }
